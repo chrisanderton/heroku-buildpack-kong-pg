@@ -1,13 +1,17 @@
-[Heroku Buildpack](https://devcenter.heroku.com/articles/buildpacks) for [Kong](https://getkong.org)
+[Heroku Buildpack](https://devcenter.heroku.com/articles/buildpacks) for [Kong](https://getkong.org) with Postgres
 =========================
-Based on [Kong version 0.7.0](http://blog.mashape.com/kong-0-7-0-released/) patched for compatibility with Heroku.
+Based on Kong version 0.8.0rc1 patched for compatibility with Heroku. Kong is also temporarily patched to use pgmoon with SSL capability included (not currently merged in the official pgmoon repo)
+
+This is a fork of Mars' original Kong buildpack - i've temporarily stripped out Cassandra while i play with the new Postgres support in 0.8.0rc1.
+
+_Links to Kong documentation in this README still point to 0.7.x until 0.8.x is online._
 
 Usage
 -----
 
 ### Beginner
 
-Deploy the [heroku-kong app](https://github.com/heroku/heroku-kong) to get started.
+Deploy the [heroku-kong app](https://github.com/chrisanderton/heroku-kong-pg) to get started.
 
 ### Expert
 
@@ -33,25 +37,8 @@ Deploy the [heroku-kong app](https://github.com/heroku/heroku-kong) to get start
     * set automatically by the Heroku dyno manager
   * `KONG_CLUSTER_SECRET` symmetric encryption key
     * generate value with command `serf keygen`; requires [Serf](https://www.serfdom.io/downloads.html)
-  * Cassandra datastore
-    * Heroku-style config vars
-      * `CASSANDRA_URL`
-         
-        ```
-cassandra://username:password@x.x.x.x:port/keyspace,cassandra://username:password@y.y.y.y:port/keyspace
-        ```  
-        
-          `username:password` must be the same for all instances.
-      * `CASSANDRA_TRUSTED_CERT` (SSL is disabled unless provided)
-    * [Instaclustr add-on](https://elements.heroku.com/addons/instaclustr) config vars
-      * `IC_CONTACT_POINTS`
-        ```
-x.x.x.x,y.y.y.y
-        ```
-      * `IC_PORT`
-      * `IC_USER`
-      * `IC_PASSWORD`
-      * `IC_CERTIFICATE` (SSL is disabled unless provided)
+  * `DATABASE_URL`
+    * Postgres datastore
 
 Background
 ----------
@@ -61,7 +48,7 @@ We vendor the sources for Lua, LuaRocks, & OpenResty/Nginx and compile them with
 
 OpenSSL 1.0.2 (required by OpenResty) is also compiled from source, as the versions included in the Cedar 14 stack & apt packages for Ubuntu/Trusty are too old.
 
-Kong is installed from a forked source repo that includes [minimal changes for compatibility with the Heroku runtime](https://github.com/Mashape/kong/compare/release/0.7.0...mars:0.7.0-external-supervisor).
+Kong is installed from a forked source repo that includes [minimal changes for compatibility with the Heroku runtime](https://github.com/Mashape/kong/compare/release/0.8.0...chrisanderton:0.8.0-external-supervisor).
 
 
 Modification

@@ -39,25 +39,15 @@ cluster:
   encrypt: "<%= cluster_secret %>"
 
 ## Specify the DAO to use
-database: cassandra
+database: postgres
 
-## Databases configuration
-cassandra:
-  contact_points:
-<% for i, host in pairs(cassandra_hosts) do -%>
-    - "<%= host %>"
-<% end -%>
-  username: "<%= cassandra_user %>"
-  password: "<%= cassandra_password %>"
-  keyspace: "<%= cassandra_keyspace %>"
-  replication_strategy: "SimpleStrategy" 
-  replication_factor: <%= cassandra_replication_factor %>
-  ssl:
-    enabled: <%= cassandra_ssl %>
-<% if cassandra_ssl then -%>
-    verify: true
-    certificate_authority: "<%= cassandra_cert %>"
-<% end -%>
+postgres:
+  host: "<%= postgres_host %>"
+  port: <%= postgres_port %>
+  user: "<%= postgres_user %>"
+  password: "<%= postgres_password %>"
+  database: "<%= postgres_database %>"
+  ssl: true
 
 ## SSL Settings
 ## (Uncomment the two properties below to set your own certificate)
@@ -128,8 +118,6 @@ nginx: |
     lua_shared_dict cluster_locks 100k;
     lua_shared_dict cluster_autojoin_locks 100k;
     lua_shared_dict cache {{memory_cache_size}}m;
-    lua_shared_dict cassandra 1m;
-    lua_shared_dict cassandra_prepared 5m;
     lua_socket_log_errors off;
     {{lua_ssl_trusted_certificate}}
     init_by_lua_block {
