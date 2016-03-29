@@ -216,14 +216,14 @@ else
 fi
 
 # Install pgmoon from src.rock
-luarocks build ${VENDOR_CACHE_DIR}/pgmoon-1.4.1-1.src.rock
+luarocks build ${VENDOR_CACHE_DIR}/pgmoon-1.4.0-1.src.rock
 
 # Install Kong itself from the cloned git repo
 luarocks make ./kong-*.rockspec
 
 # Install Kong's dependencies via LuaRocks
 # (`--local` is required for this to do anything)
-luarocks install --local ${VENDOR_CACHE_DIR}/pgmoon-1.4.1-1.src.rock
+luarocks install --local ${VENDOR_CACHE_DIR}/pgmoon-1.4.0-1.src.rock
 luarocks install --only-deps --local ./kong-*.rockspec
 
 topic "Installing Lua rocks for kong-12f"
