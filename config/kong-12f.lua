@@ -49,6 +49,8 @@ if not cluster_address then
 end
 local cluster_listen    = cluster_address..":"..cluster_port
 
+local serf_log_level    = os.getenv("SERF_LOG_LEVEL") or "err"
+
 -- Configure Postgres
 local postgres_user
 local postgres_password
@@ -160,6 +162,8 @@ env_file:write("export SERF_CLUSTER_LISTEN="..configuration.cluster_listen.."\n"
 env_file:write("export SERF_CLUSTER_LISTEN_RPC="..configuration.cluster_listen_rpc.."\n")
 env_file:write("export SERF_ENCRYPT="..(configuration.cluster.encrypt or '""').."\n")
 env_file:write("export SERF_NODE_NAME="..cluster_utils.get_node_name(configuration).."\n")
+env_file:write("export SERF_LOG_LEVEL="..serf_log_level.."\n")
+
 -- In the event handler, "kong" value is a copy of hardcoded,
 -- local var `EVENT_NAME` in kong.cli.services.serf
 env_file:write("export SERF_EVENT_HANDLER=".."member-join,member-leave,member-failed,member-update,member-reap,user:kong="..prepared_services.serf._script_path.."\n")
