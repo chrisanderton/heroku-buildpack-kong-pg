@@ -50,6 +50,7 @@ end
 local cluster_listen    = cluster_address..":"..cluster_port
 
 local serf_log_level    = os.getenv("SERF_LOG_LEVEL") or "err"
+local kong_log_level    = os.getenv("KONG_LOG_LEVEL") or "info"
 
 -- Configure Postgres
 local postgres_user
@@ -122,7 +123,8 @@ local values = {
   postgres_password   = postgres_password,
   postgres_host       = postgres_host,
   postgres_port       = postgres_port,
-  postgres_database   = postgres_database
+  postgres_database   = postgres_database,
+  kong_log_level      = kong_log_level
 }
 
 local config = template(values)
